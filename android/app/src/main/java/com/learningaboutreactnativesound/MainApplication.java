@@ -20,6 +20,17 @@ import expo.modules.ReactNativeHostWrapper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import com.zmxv.RNSound.RNSoundPackage;
+
+
+@Override
+protected List<ReactPackage> getPackages() {
+    return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+        new RNSoundPackage() // <-- New
+    );
+}
+
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
     this,

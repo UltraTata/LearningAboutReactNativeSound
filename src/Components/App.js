@@ -1,41 +1,55 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Sound from "react-native-sound";
+import React, {useEffect} from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+var Sound = require('react-native-sound');
+
 
 Sound.setCategory('Playback');
-var whoosh = new Sound('marcha_peronista.mp3', Sound.MAIN_BUNDLE, (error) => {
-  if (error) {
+
+
+var ding = new Sound('marcha_peronista.mp3', Sound.MAIN_BUNDLE, (error) => {
+if (error) {
     console.log('failed to load the sound', error);
     return;
   }
-  // loaded successfully
-  console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
+  // if loaded successfully
+  console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels());
 
-  // Play the sound with an onEnd callback
-  whoosh.play((success) => {
-    if (success) {
-      console.log('successfully finished playing');
-    } else {
-      console.log('playback failed due to audio decoding errors');
-    }
-  });
 });
-
-export default function App() {
+const App = () => {
+  useEffect(() => {
+    ding.setVolume(1);
+    return () => {
+      ding.release();
+    };
+  }, []);
+  const playPause = () => {
+    ding.play(success => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
+  };
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <TouchableOpacity style={styles.playBtn} onPress={playPause}>
+        <Ionicons name={'ios-play-outline'} size={36} color={'#fff'} />
+      </TouchableOpacity>
     </View>
   );
-}
-
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#000',
+  },
+  playBtn: {
+    padding: 20,
   },
 });
+export default App;
